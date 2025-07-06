@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎯 Spin Lotre - Haflatul Imtihan</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      opacity: 0;
+      animation: fadeInBody 1s ease-in forwards;
+    }
+
+    @keyframes fadeInBody {
+      to { opacity: 1; }
+    }
+
+    header {
+      animation: slideDown 0.8s ease-out;
+    }
+
+    @keyframes slideDown {
+      from { transform: translateY(-30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .wheel-container, .input-box, #history {
+      animation: fadeInScale 1s ease-in-out;
+    }
+
+    @keyframes fadeInScale {
+      from {
+        transform: scale(0.95);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      transition: transform 0.2s ease-in-out;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <img src="logo-mi.png" alt="Logo Madrasah Nurul Muttaqin">
+  <h1>🎯 Spin Lotre - Haflatul Imtihan</h1>
+  <h2>🌙 Madrasah Nurul Muttaqin Ketawang Laok</h2>
+</header>
+
+<div class="wheel-row">
+  <div class="wheel-container">
+    <canvas id="hadiahWheel" width="300" height="300"></canvas>
+  </div>
+  <button class="spinBtnCenter" onclick="startLotreSpin()">🎰 Putar</button>
+  <div class="wheel-container">
+    <canvas id="lotreWheel" width="300" height="300"></canvas>
+  </div>
+</div>
+
+<div class="bottom-row">
+  <div class="input-box">
+    <h3>🎁 Hadiah</h3>
+    <textarea id="hadiahInput" placeholder="Masukkan hadiah per baris..."></textarea>
+    <button onclick="addHadiah()">Tambah Hadiah</button>
+  </div>
+
+  <div id="history">
+    <h3>📝 Riwayat</h3>
+    <div id="historyList"></div>
+  </div>
+
+  <div class="input-box">
+    <h3>🎟️ Nomor Lotre</h3>
+    <textarea id="lotreInput" placeholder="Masukkan nomor lotre per baris..."></textarea>
+    <button onclick="addLotre()">Tambah Lotre</button>
+  </div>
+</div>
+
+<div id="popup">
+  <div class="popup-content" id="popupContent"></div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
