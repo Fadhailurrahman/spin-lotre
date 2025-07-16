@@ -34,14 +34,22 @@ function drawWheel(canvasId, data) {
 }
 
 function addLotre() {
-  const input = document.getElementById("lotreInput").value.split("\n").map(x => x.trim()).filter(x => x && !lotreData.includes(x));
+  const input = document.getElementById("lotreInput").value
+    .split("\n")
+    .map(x => x.trim())
+    .filter(x => /^\d+$/.test(x) && !lotreData.includes(x));
+
   lotreData.push(...input);
   document.getElementById("lotreInput").value = "";
   drawWheel("lotreWheel", lotreData);
 }
 
 function addHadiah() {
-  const input = document.getElementById("hadiahInput").value.split("\n").map(x => x.trim()).filter(x => x && !hadiahData.includes(x));
+  const input = document.getElementById("hadiahInput").value
+    .split("\n")
+    .map(x => x.trim())
+    .filter(x => /^[a-zA-Z\\s]+$/.test(x) && !hadiahData.includes(x));
+
   hadiahData.push(...input);
   document.getElementById("hadiahInput").value = "";
   drawWheel("hadiahWheel", hadiahData);
@@ -76,8 +84,8 @@ function startLotreSpin() {
     showPopup(
       `🎟️ Nomor lotre yang terpilih adalah: <strong>${winner}</strong>`,
       [
-        { text: "🎁 Pilih Hadiah", action: "lanjut" },
-        { text: "🔄 Ulangi Nomor", action: "ulang" }
+        { text: "🎁 Pilih Hadiah", action: "lanjut", color: "bg-green-600" },
+        { text: "🔄 Ulangi Nomor", action: "ulang", color: "bg-yellow-500" }
       ]
     );
   });
@@ -88,27 +96,28 @@ function startHadiahSpin() {
     hadiahData.splice(index, 1);
     drawWheel("hadiahWheel", hadiahData);
 
-    showPopup(`🎉 Selamat! Nomor <strong>${selectedLotre}</strong> mendapatkan hadiah: <strong>${winner}</strong>`, [
-      { text: "Tutup", action: "tutup" }
-    ]);
+    showPopup(
+      `🎉 Selamat! Nomor <strong>${selectedLotre}</strong> mendapatkan hadiah: <strong>${winner}</strong>`,
+      [{ text: "Tutup", action: "tutup", color: "bg-blue-600" }]
+    );
 
     const item = document.createElement("div");
-    item.className = "history-item";
-    item.textContent = `🎟️ No ${selectedLotre} memenangkan \"${winner}\"`;
+    item.className = "bg-green-50 border-l-4 border-green-400 px-2 py-1 rounded text-sm";
+    item.textContent = `🎟️ No ${selectedLotre} memenangkan "${winner}"`;
     historyList.prepend(item);
   });
 }
 
 function showPopup(message, buttons) {
   const btnHtml = buttons.map(btn =>
-    `<button class="close-btn" onclick="handlePopupAction('${btn.action}')">${btn.text}</button>`
+    `<button onclick="handlePopupAction('${btn.action}')" class="px-4 py-2 text-white ${btn.color} hover:opacity-90 rounded font-semibold mx-2">${btn.text}</button>`
   ).join("");
-  popupContent.innerHTML = `<div>${message}</div><div style="margin-top: 20px;">${btnHtml}</div>`;
-  popup.style.display = "flex";
+  popupContent.innerHTML = `<div>${message}</div><div class="mt-4 flex justify-center flex-wrap gap-2">${btnHtml}</div>`;
+  popup.classList.remove("hidden");
 }
 
 function handlePopupAction(action) {
-  popup.style.display = "none";
+  popup.classList.add("hidden");
 
   if (action === "lanjut") {
     lotreData.splice(selectedIndex, 1);

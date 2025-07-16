@@ -1,92 +1,113 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>🎯 Spin Lotre - Haflatul Imtihan</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
   <style>
     body {
-      opacity: 0;
-      animation: fadeInBody 1s ease-in forwards;
+      font-family: 'Roboto', sans-serif;
     }
 
-    @keyframes fadeInBody {
-      to { opacity: 1; }
-    }
-
-    header {
-      animation: slideDown 0.8s ease-out;
-    }
-
-    @keyframes slideDown {
-      from { transform: translateY(-30px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-
-    .wheel-container, .input-box, #history {
-      animation: fadeInScale 1s ease-in-out;
-    }
-
-    @keyframes fadeInScale {
-      from {
-        transform: scale(0.95);
-        opacity: 0;
+    @keyframes gradientMove {
+      0% {
+        background-position: 0% 50%;
       }
-      to {
-        transform: scale(1);
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    .animated-bg {
+      background: linear-gradient(270deg, #a7ffeb, #ccff90, #a7ffeb);
+      background-size: 600% 600%;
+      animation: gradientMove 10s ease infinite;
+    }
+
+    .star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: white;
+      border-radius: 50%;
+      animation: twinkle 2s infinite ease-in-out;
+      opacity: 0.8;
+    }
+
+    @keyframes twinkle {
+      0%, 100% {
+        opacity: 0.2;
+      }
+
+      50% {
         opacity: 1;
       }
     }
-
-    button:hover {
-      transform: scale(1.05);
-      transition: transform 0.2s ease-in-out;
-    }
   </style>
 </head>
-<body>
 
-<header>
-  <img src="logo-mi.png" alt="Logo Madrasah Nurul Muttaqin">
-  <h1>🎯 Spin Lotre - Haflatul Imtihan</h1>
-  <h2>🌙 Madrasah Nurul Muttaqin Ketawang Laok</h2>
-</header>
-
-<div class="wheel-row">
-  <div class="wheel-container">
-    <canvas id="hadiahWheel" width="300" height="300"></canvas>
-  </div>
-  <button class="spinBtnCenter" onclick="startLotreSpin()">🎰 Putar</button>
-  <div class="wheel-container">
-    <canvas id="lotreWheel" width="300" height="300"></canvas>
-  </div>
-</div>
-
-<div class="bottom-row">
-  <div class="input-box">
-    <h3>🎁 Hadiah</h3>
-    <textarea id="hadiahInput" placeholder="Masukkan hadiah per baris..."></textarea>
-    <button onclick="addHadiah()">Tambah Hadiah</button>
+<body class="relative z-20 animated-bg text-emerald-800 text-center p-4 min-h-screen">
+   <div class="fixed inset-0 z-0 pointer-events-none">
+    <div class="star" style="top: 10%; left: 20%;"></div>
+    <div class="star" style="top: 50%; left: 70%;"></div>
+    <div class="star" style="top: 80%; left: 40%;"></div>
+    <div class="star" style="top: 30%; left: 90%;"></div>
+    <div class="star" style="top: 70%; left: 10%;"></div>
   </div>
 
-  <div id="history">
-    <h3>📝 Riwayat</h3>
-    <div id="historyList"></div>
+  <div id="particles-js" class="fixed inset-0 z-0 pointer-events-none"></div>
+
+   <header class="bg-gradient-to-r from-green-500 to-green-700 text-white shadow-md py-6 px-4 rounded-lg">
+    <img src="logo-mi.png" alt="Logo Madrasah Nurul Muttaqin" class="w-24 mx-auto mb-4" />
+    <h1 class="text-3xl font-bold">Spin Lotre - Haflatul Imtihan</h1>
+    <h2 class="text-xl mt-1">Madrasah Nurul Muttaqin Ketawang Laok</h2>
+  </header>
+
+  <div class="flex flex-wrap justify-center items-center gap-8 mt-10">
+    <div class="bg-white rounded-full shadow-lg p-4 w-80 h-80 flex justify-center items-center">
+      <canvas id="hadiahWheel" width="300" height="300"></canvas>
+    </div>
+    <button onclick="startLotreSpin()" class="bg-green-700 hover:bg-green-800 text-white font-bold py-3 px-6 rounded-lg shadow-lg text-lg transition-transform hover:scale-105">🎰 Putar</button>
+    <div class="bg-white rounded-full shadow-lg p-4 w-80 h-80 flex justify-center items-center">
+      <canvas id="lotreWheel" width="300" height="300"></canvas>
+    </div>
   </div>
 
-  <div class="input-box">
-    <h3>🎟️ Nomor Lotre</h3>
-    <textarea id="lotreInput" placeholder="Masukkan nomor lotre per baris..."></textarea>
-    <button onclick="addLotre()">Tambah Lotre</button>
+  <div class="flex flex-wrap justify-center items-start gap-6 mt-10">
+    <div class="bg-white p-6 rounded-xl shadow-lg w-64">
+      <h3 class="text-lg font-semibold mb-2">🎁 Hadiah</h3>
+      <textarea id="hadiahInput" placeholder="Masukkan hadiah per baris..." class="w-full h-28 p-2 border border-gray-300 rounded-md resize-none"></textarea>
+      <button onclick="addHadiah()" class="mt-3 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded font-semibold w-full">Tambah Hadiah</button>
+    </div>
+
+    <div id="history" class="bg-white p-6 rounded-xl shadow-lg w-64">
+      <h3 class="text-lg font-semibold mb-2">📝 Riwayat</h3>
+      <div id="historyList" class="text-left text-sm space-y-2"></div>
+    </div>
+
+    <div class="bg-white p-6 rounded-xl shadow-lg w-64">
+      <h3 class="text-lg font-semibold mb-2">🎟️ Nomor Lotre</h3>
+      <textarea id="lotreInput" placeholder="Masukkan nomor lotre per baris..." class="w-full h-28 p-2 border border-gray-300 rounded-md resize-none"></textarea>
+      <button onclick="addLotre()" class="mt-3 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded font-semibold w-full">Tambah Lotre</button>
+    </div>
   </div>
-</div>
 
-<div id="popup">
-  <div class="popup-content" id="popupContent"></div>
-</div>
+  <div id="popup" class="hidden fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
+    <div class="bg-white p-6 rounded-xl text-center max-w-md shadow-2xl">
+      <div id="popupContent" class="text-lg space-y-4"></div>
+    </div>
+  </div>
 
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
